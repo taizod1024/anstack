@@ -27,6 +27,5 @@ services:
     ports:
       - "5432:5432"
     restart: unless-stopped
-    # 永続化なし
-    # volumes:
-    #   - ./data/db:/var/lib/postgresql/data
+    volumes:
+      - ./data/db:/var/lib/postgresql/data

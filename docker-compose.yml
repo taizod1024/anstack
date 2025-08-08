@@ -1,31 +1,39 @@
 version: "3.8"
 services:
-  appsmith:
-    image: appsmith/appsmith-ce
-    container_name: appsmith
-    ports:
-      - "8080:80"
-    restart: unless-stopped
-
   n8n:
     image: n8nio/n8n
-    container_name: n8n
-    ports:
-      - "5678:5678"
-    restart: unless-stopped
+    restart: always
     environment:
-      - N8N_BASIC_AUTH_ACTIVE=false
-      # 必要に応じて追加設定
+      - DB_TYPE=${N8N_DB_TYPE}
+      - DB_POSTGRESDB_HOST=${N8N_DB_POSTGRESDB_HOST}
+      - DB_POSTGRESDB_PORT=${N8N_DB_POSTGRESDB_PORT}
+      - DB_POSTGRESDB_DATABASE=${N8N_DB_POSTGRESDB_DATABASE}
+      - DB_POSTGRESDB_USER=${N8N_DB_POSTGRESDB_USER}
+      - DB_POSTGRESDB_PASSWORD=${N8N_DB_POSTGRESDB_PASSWORD}
+    depends_on:
+      - postgres
+
+  appsmith:
+    image: appsmith/appsmith-ce
+    restart: always
+    environment:
+      - APPSMITH_DB_HOST=${APPSMITH_DB_HOST}
+      - APPSMITH_DB_PORT=${APPSMITH_DB_PORT}
+      - APPSMITH_DB_NAME=${APPSMITH_DB_NAME}
+      - APPSMITH_DB_USERNAME=${APPSMITH_DB_USERNAME}
+      - APPSMITH_DB_PASSWORD=${APPSMITH_DB_PASSWORD}
+    depends_on:
+      - postgres
 
   postgres:
-    image: postgres:16
-    container_name: postgres
+    image: postgres:14
+    restart: always
     environment:
-      POSTGRES_DB: anstackdb
       POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: anstackpass
-    ports:
-      - "5432:5432"
-    restart: unless-stopped
+      POSTGRES_PASSWORD: anstack_pass
     volumes:
-      - ./data/db:/var/lib/postgresql/data
+      - postgres_data:/var/lib/postgresql/data
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+
+volumes:
+  postgres_data:

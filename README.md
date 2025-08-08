@@ -1,12 +1,12 @@
-# anstack（エーエヌスタック）
+# anstack
 anstackは、業務アプリケーション開発のための統合環境です。
 以下の技術スタックで構成されています：
 
-- Appsmith（ローコードアプリ作成）
-- Node.js & Express（バックエンドAPI）
-- Prisma（ORM）
-- PostgreSQL（データベース）
-- n8n（ワークフロー自動化）
+- Appsmith
+- Node.js & Express
+- Prisma
+- PostgreSQL
+- n8n
 
 ## 特徴
 

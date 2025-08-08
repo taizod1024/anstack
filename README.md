@@ -1,6 +1,7 @@
 # anstack
-anstackは、業務アプリケーション開発のための統合環境です。
-以下の技術スタックで構成されています：
+anstackは、業務アプリケーション開発のための統合環境
+
+## 技術スタック
 
 - Appsmith
 - Node.js & Express

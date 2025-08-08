@@ -1,0 +1,6 @@
+# Data directories
+data/
+*.log
+
+# Environment variables
+.env.local

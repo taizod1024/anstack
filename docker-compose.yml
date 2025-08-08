@@ -1,4 +1,3 @@
-version: "3.8"
 services:
   appsmith:
     image: appsmith/appsmith-ce
@@ -14,18 +13,30 @@ services:
       - "5678:5678"
     restart: unless-stopped
     environment:
-      - N8N_BASIC_AUTH_ACTIVE=false
-      # 必要に応じて追加設定
+      - N8N_BASIC_AUTH_ACTIVE=${N8N_BASIC_AUTH_ACTIVE}
+      - DB_TYPE=${DB_TYPE}
+      - DB_POSTGRESDB_HOST=${DB_POSTGRESDB_HOST}
+      - DB_POSTGRESDB_PORT=${DB_POSTGRESDB_PORT}
+      - DB_POSTGRESDB_DATABASE=${DB_POSTGRESDB_DATABASE}
+      - DB_POSTGRESDB_USER=${DB_POSTGRESDB_USER}
+      - DB_POSTGRESDB_PASSWORD=${DB_POSTGRESDB_PASSWORD}
+    volumes:
+      - ./data/n8n:/home/node/.n8n
+    depends_on:
+      - postgres
 
   postgres:
     image: postgres:16
     container_name: postgres
     environment:
-      POSTGRES_DB: anstackdb
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: anstackpass
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      # Create additional database and user for n8n
+      POSTGRES_MULTIPLE_DATABASES: ${DB_POSTGRESDB_DATABASE}
     ports:
       - "5432:5432"
     restart: unless-stopped
     volumes:
       - ./data/db:/var/lib/postgresql/data
+      - ./scripts/postgres-init.sh:/docker-entrypoint-initdb.d/postgres-init.sh

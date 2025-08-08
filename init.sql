@@ -1,0 +1,2 @@
+CREATE DATABASE n8n OWNER postgres;
+CREATE DATABASE appsmith OWNER postgres;

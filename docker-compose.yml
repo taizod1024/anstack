@@ -5,36 +5,23 @@ services:
     ports:
       - "8080:80"
     restart: unless-stopped
+
+  n8n:
+    image: n8nio/n8n
+    container_name: n8n
+    ports:
+      - "5678:5678"
+    restart: unless-stopped
     environment:
-      # Appsmith内部データベースはSQLiteを使用（PostgreSQL v0012マイグレーションバグ回避）
-      # - APPSMITH_DB_URL=postgresql://${APPSMITH_DB_USERNAME}:${APPSMITH_DB_PASSWORD}@${APPSMITH_DB_HOST}:${APPSMITH_DB_PORT}/${APPSMITH_DB_NAME}
-      - APPSMITH_ENCRYPTION_PASSWORD=${APPSMITH_ENCRYPTION_PASSWORD}
-      - APPSMITH_ENCRYPTION_SALT=${APPSMITH_ENCRYPTION_SALT}
-    env_file:
-      - .env
-    depends_on:
-      postgres:
-        condition: service_healthy
+      - N8N_BASIC_AUTH_ACTIVE=false
 
   postgres:
     image: postgres:16
     container_name: postgres
     environment:
-      POSTGRES_DB: anstack
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: anstack_pass
+      POSTGRES_DB: ${APP_DB_NAME}
+      POSTGRES_USER: ${APP_DB_USERNAME}
+      POSTGRES_PASSWORD: ${APP_DB_PASSWORD}
     ports:
       - "5432:5432"
     restart: unless-stopped
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
-      - ./init.sql:/docker-entrypoint-initdb.d/01-init.sql:ro
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U postgres -d anstack"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
-      start_period: 30s
-
-volumes:
-  postgres_data:

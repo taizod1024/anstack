@@ -1,12 +1,7 @@
--- Appsmith and N8N database initialization script
-\echo 'Creating databases...'
+-- Database initialization script
+\echo 'Creating anstack database...'
 
--- -- Create N8N database
--- CREATE DATABASE n8n OWNER postgres;
--- \echo 'Created n8n database'
-
--- -- Create Appsmith database  
--- CREATE DATABASE appsmith OWNER postgres;
--- \echo 'Created appsmith database'
+-- anstack database will be created automatically by POSTGRES_DB
+\echo 'Database anstack will be ready for Appsmith internal data and application data'
 
 \echo 'Database initialization completed!'

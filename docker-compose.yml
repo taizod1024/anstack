@@ -9,6 +9,7 @@ services:
   n8n:
     image: n8nio/n8n
     container_name: n8n
+    entrypoint: ["/usr/local/bin/n8n", "start"]
     ports:
       - "5678:5678"
     restart: unless-stopped

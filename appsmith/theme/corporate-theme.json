@@ -1,0 +1,42 @@
+{
+  "name": "ANStack Corporate Theme",
+  "displayName": "ANStack統一テーマ",
+  "config": {
+    "colors": {
+      "primaryColor": "#0066cc",
+      "backgroundColor": "#ffffff",
+      "secondaryColor": "#6c757d",
+      "textColor": "#212529",
+      "textOnDarkBG": "#ffffff"
+    },
+    "borderRadius": {
+      "appBorderRadius": "8px"
+    },
+    "boxShadow": {
+      "appBoxShadow": "0 2px 4px rgba(0,0,0,0.1)"
+    },
+    "fontFamily": {
+      "appFont": "Inter, -apple-system, BlinkMacSystemFont, sans-serif"
+    }
+  },
+  "stylesheet": {
+    ".t--widget-containerwidget": {
+      "border": "1px solid #e9ecef",
+      "border-radius": "8px",
+      "box-shadow": "0 2px 4px rgba(0,0,0,0.05)"
+    },
+    ".t--widget-buttonwidget": {
+      "background-color": "#0066cc !important",
+      "border-radius": "8px !important",
+      "font-weight": "600 !important"
+    },
+    ".t--widget-inputwidgetv2": {
+      "border": "1px solid #ced4da !important",
+      "border-radius": "8px !important"
+    },
+    ".t--widget-tablewidgetv2": {
+      "border": "1px solid #e9ecef !important",
+      "border-radius": "8px !important"
+    }
+  }
+}

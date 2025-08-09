@@ -5,62 +5,51 @@ services:
     ports:
       - "8080:80"
     restart: unless-stopped
-    environment:
-      # カスタムテーマとブランディング強制
-      - APPSMITH_CUSTOM_DOMAIN=localhost
-      - APPSMITH_DISABLE_TELEMETRY=true
-    volumes:
-      # テーマ・設定ファイルをマウント
-      - ./appsmith/theme:/appsmith-stacks/configuration/docker/theme
-      - ./appsmith/branding:/appsmith-stacks/configuration/docker/branding
+    depends_on:
+      - postgres
 
-  # Apache Airflow: Apache 2.0ライセンス、SaaS提供可能なワークフロー自動化
-  airflow-webserver:
-    image: apache/airflow:2.8.1
-    container_name: airflow-webserver
-    environment:
-      AIRFLOW__CORE__EXECUTOR: LocalExecutor
-      AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: postgresql+psycopg2://${APP_DB_USERNAME}:${APP_DB_PASSWORD}@postgres:5432/airflow
-      AIRFLOW__CORE__FERNET_KEY: 'YlCImzjge_TeZc7jPJ7Jz7-8Mq6EiQW6kVv_nNuK_oA='
-      AIRFLOW__CORE__DAGS_ARE_PAUSED_AT_CREATION: 'true'
-      AIRFLOW__CORE__LOAD_EXAMPLES: 'false'
-      AIRFLOW__WEBSERVER__EXPOSE_CONFIG: 'true'
-      _PIP_ADDITIONAL_REQUIREMENTS: 'apache-airflow-providers-postgres psycopg2-binary'
-    ports:
-      - "8081:8080"
-    volumes:
-      - ./airflow/dags:/opt/airflow/dags
-      - ./airflow/logs:/opt/airflow/logs
-    depends_on:
-      - postgres
-    user: "0:0"
-    volumes:
-      - ./airflow/dags:/opt/airflow/dags
-      - ./airflow/logs:/opt/airflow/logs
-      - ./airflow/plugins:/opt/airflow/plugins
-    depends_on:
-      - postgres
-    restart: unless-stopped
-    command: webserver
+  # Apache Airflow: Apache 2.0ライセンス、SaaS提供可能なワークフロー自動化（一時コメントアウト）
+  # airflow-webserver:
+  #   image: apache/airflow:2.8.1
+  #   container_name: airflow-webserver
+  #   environment:
+  #     AIRFLOW__CORE__EXECUTOR: LocalExecutor
+  #     AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: postgresql+psycopg2://${APP_DB_USERNAME}:${APP_DB_PASSWORD}@postgres:5432/airflow
+  #     AIRFLOW__CORE__FERNET_KEY: 'YlCImzjge_TeZc7jPJ7Jz7-8Mq6EiQW6kVv_nNuK_oA='
+  #     AIRFLOW__CORE__DAGS_ARE_PAUSED_AT_CREATION: 'true'
+  #     AIRFLOW__CORE__LOAD_EXAMPLES: 'false'
+  #     AIRFLOW__WEBSERVER__EXPOSE_CONFIG: 'true'
+  #     _PIP_ADDITIONAL_REQUIREMENTS: 'apache-airflow-providers-postgres psycopg2-binary'
+  #   ports:
+  #     - "8081:8080"
+  #   volumes:
+  #     - ./airflow/dags:/opt/airflow/dags
+  #     - ./airflow/logs:/opt/airflow/logs
+  #     - ./airflow/plugins:/opt/airflow/plugins
+  #   depends_on:
+  #     - postgres
+  #   user: "0:0"
+  #   restart: unless-stopped
+  #   command: webserver
 
-  airflow-scheduler:
-    image: apache/airflow:2.8.1
-    container_name: airflow-scheduler
-    environment:
-      AIRFLOW__CORE__EXECUTOR: LocalExecutor
-      AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: postgresql+psycopg2://${APP_DB_USERNAME}:${APP_DB_PASSWORD}@postgres:5432/airflow
-      AIRFLOW__CORE__FERNET_KEY: 'YlCImzjge_TeZc7jPJ7Jz7-8Mq6EiQW6kVv_nNuK_oA='
-      AIRFLOW__CORE__DAGS_ARE_PAUSED_AT_CREATION: 'true'
-      AIRFLOW__CORE__LOAD_EXAMPLES: 'false'
-      _PIP_ADDITIONAL_REQUIREMENTS: 'apache-airflow-providers-postgres psycopg2-binary'
-    volumes:
-      - ./airflow/dags:/opt/airflow/dags
-      - ./airflow/logs:/opt/airflow/logs
-      - ./airflow/plugins:/opt/airflow/plugins
-    depends_on:
-      - postgres
-    restart: unless-stopped
-    command: scheduler
+  # airflow-scheduler:
+  #   image: apache/airflow:2.8.1
+  #   container_name: airflow-scheduler
+  #   environment:
+  #     AIRFLOW__CORE__EXECUTOR: LocalExecutor
+  #     AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: postgresql+psycopg2://${APP_DB_USERNAME}:${APP_DB_PASSWORD}@postgres:5432/airflow
+  #     AIRFLOW__CORE__FERNET_KEY: 'YlCImzjge_TeZc7jPJ7Jz7-8Mq6EiQW6kVv_nNuK_oA='
+  #     AIRFLOW__CORE__DAGS_ARE_PAUSED_AT_CREATION: 'true'
+  #     AIRFLOW__CORE__LOAD_EXAMPLES: 'false'
+  #     _PIP_ADDITIONAL_REQUIREMENTS: 'apache-airflow-providers-postgres psycopg2-binary'
+  #   volumes:
+  #     - ./airflow/dags:/opt/airflow/dags
+  #     - ./airflow/logs:/opt/airflow/logs
+  #     - ./airflow/plugins:/opt/airflow/plugins
+  #   depends_on:
+  #     - postgres
+  #   restart: unless-stopped
+  #   command: scheduler
 
   postgres:
     image: postgres:16

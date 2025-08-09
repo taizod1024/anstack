@@ -31,15 +31,6 @@ else
     exit 1
 fi
 
-# Airflow環境確認
-if docker compose ps | grep -q "airflow.*Up"; then
-    echo "✅ Airflowコンテナ稼働中"
-else
-    echo "❌ Airflowコンテナが停止しています"
-    echo "docker compose up -d で起動してください"
-    exit 1
-fi
-
 # 4. PostgreSQL接続確認
 echo "4. データベース接続確認中..."
 if docker compose exec postgres pg_isready -U postgres; then
@@ -73,10 +64,9 @@ echo "🎯 Appsmith統制環境の準備完了"
 echo ""
 echo "次のステップ:"
 echo "1. http://localhost:8080 でAppsmithにアクセス"
-echo "2. http://localhost:8081 でAirflow管理画面にアクセス"
-echo "3. 初回セットアップ実行"
-echo "4. テンプレートアプリケーション作成"
-echo "5. コーポレートテーマ適用確認"
+echo "2. 初回セットアップ実行"
+echo "3. テンプレートアプリケーション作成"
+echo "4. コーポレートテーマ適用確認"
 echo ""
 echo "📋 開発者向けリソース:"
 echo "- 開発ガイドライン: docs/APPSMITH_STANDARDS.md"
